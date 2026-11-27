@@ -11,6 +11,15 @@ No build step and no dependencies. Open `index.html` in a browser, or serve the 
 npx serve .        # or: python3 -m http.server
 ```
 
+## Install
+
+- **Phone (Android/Chrome):** open the hosted page and tap **Install app** (or the browser menu, then *Install app*).
+- **iPhone/iPad:** open it in Safari, tap Share, then **Add to Home Screen**.
+- **Windows/Mac:** open the Claude artifact in the Claude desktop app and choose **Install app**,
+  or use Chrome's install icon in the address bar on the hosted page.
+
+The installed app works offline once it has loaded (the service worker caches it).
+
 ## What's inside
 
 | File | What it does |
@@ -20,6 +29,7 @@ npx serve .        # or: python3 -m http.server
 | `js/music.js` | Chord parsing, transposing, guitar shapes, piano voicings, SVG diagrams, audio (piano tone, plucked guitar, metronome) |
 | `js/songs.js` | Starter library and categories |
 | `js/lessons.js` | Guitar and piano courses |
+| `sw.js`, `manifest.webmanifest`, `icon.svg` | Installable app and offline cache |
 | `js/app.js` | The app: songbook, song view, auto-scroll, Learn page, editor, sharing and recommendations |
 
 ## Songs

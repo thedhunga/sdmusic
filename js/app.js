@@ -385,7 +385,7 @@ function viewLibrary() {
         <button data-f="wishlist" aria-pressed="${libFilter === 'wishlist'}">Wishlist ${songs.filter(s => s.status === 'wishlist').length}</button>
       </div></div>
     <div id="res"></div>
-    <div class="tools"><span class="mute">${esc(storeNote)}.</span><button class="btn sm" id="exp">Back up songs</button><button class="btn sm" id="imp">Restore or import</button>${amOwner ? '<button class="btn sm" id="shr">Share with friends</button>' : ''}</div>
+    <div class="tools"><span class="mute">${esc(storeNote)}.</span><button class="btn sm pri" id="inst" hidden>Install app</button><button class="btn sm" id="exp">Back up songs</button><button class="btn sm" id="imp">Restore or import</button>${amOwner ? '<button class="btn sm" id="shr">Share with friends</button>' : ''}</div>
   </div>`;
   const draw = () => {
     const q = libQuery.toLowerCase().trim();
@@ -405,9 +405,26 @@ function viewLibrary() {
   app.querySelectorAll('.chips button').forEach(b => b.addEventListener('click', () => { libFilter = b.dataset.f; viewLibrary(); }));
   $('#exp').addEventListener('click', exportSongs);
   $('#shr') && $('#shr').addEventListener('click', shareHelp);
+  setupInstall();
   $('#imp').addEventListener('click', importDialog);
 }
 
+/* install: Claude desktop app (artifact), or browser "Add to home screen" (hosted copy) */
+let deferredPrompt = null;
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; const b = $('#inst'); if (b) b.hidden = false; });
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
+async function setupInstall() {
+  const b = $('#inst'); if (!b) return;
+  if (deferredPrompt) b.hidden = false;
+  let desk = null;
+  try { desk = window.claude && window.claude.use ? await window.claude.use('desktop') : null; if (desk && desk.install && await desk.install.state() === 'available') b.hidden = false; else desk = null; } catch { desk = null; }
+  b.onclick = async () => {
+    if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; b.hidden = true; return; }
+    if (desk) { try { await desk.install.request(); } catch { toast('Install was cancelled'); } return; }
+    dialog(`<h2>Install Sur</h2><p><b>iPhone or iPad:</b> open this page in Safari, tap Share, then <b>Add to Home Screen</b>.</p><p><b>Android:</b> in Chrome, open the menu and tap <b>Install app</b>.</p><p><b>Windows or Mac:</b> open this page in the Claude desktop app and choose Install, or use Chrome’s install icon in the address bar.</p><div class="row"><button class="btn pri" data-close>OK</button></div>`);
+  };
+  if (!desk && !deferredPrompt && /iPhone|iPad|Android/i.test(navigator.userAgent)) b.hidden = false;
+}
 const isMine = s => s.source === 'user' && (s.addedBy ? s.addedBy === myId : true);
 const cardWhy = x => card(x.o).replace(/<\/a>$/, `<span class="why">${esc(x.why.join(' · '))}</span></a>`);
 function shareHelp() {
