@@ -89,19 +89,75 @@ How [G]precious [G7]did that [C]grace ap[G]pear
 The [Em]hour I [D]first be[G]lieved`
 },
 
-/* ---------- chord charts (add your own lyrics) ---------- */
-{ id: 'hotel-california', title: 'Hotel California', artist: 'Eagles', year: 1976, category: 'rock-70s', key: 'Bm', bpm: 74, time: '4/4', capo: 7, duration: 390,
-  strum: 'Fingerpicked arpeggios; capo 7 lets you use Em shapes', tags: ['classic rock','minor','8-bar loop','solo'], status: 'chords',
-  chordpro: `{c: Verse (one chord per bar)}
-[Bm] [F#] [A] [E] | [G] [D] [Em] [F#]
+{
+  id: 'drunken-sailor', title: 'What Shall We Do with the Drunken Sailor', artist: 'Traditional (sea shanty)', year: null,
+  category: 'roots', key: 'Em', bpm: 112, time: '4/4', capo: 0, duration: 120, strum: 'D - D - D - D -  (one strum per beat)',
+  tags: ['shanty','beginner','2 chords','minor'], status: 'full',
+  note: 'A two-chord shanty for your first week: Em and D. Keep strumming Em and move to D only where it is marked.',
+  chordpro: `{c: Verse}
+[Em]What shall we do with a drunken sailor?
+[D]What shall we do with a drunken sailor?
+[Em]What shall we do with a drunken sailor?
+[D]Ear-ly in the [Em]morning
 
 {c: Chorus}
 {soc}
-[G] [D] [F#] [Bm] | [G] [D] [Em] [F#]
+[Em]Way hay and up she rises
+[D]Way hay and up she rises
+[Em]Way hay and up she rises
+[D]Ear-ly in the [Em]morning
+{eoc}
+
+{c: Verse 2}
+[Em]Put him in the long boat till he's sober
+[D]Put him in the long boat till he's sober
+[Em]Put him in the long boat till he's sober
+[D]Ear-ly in the [Em]morning`
+},
+{
+  id: 'twinkle-twinkle', title: 'Twinkle, Twinkle, Little Star', artist: 'Jane Taylor (1806), traditional tune', year: 1806,
+  category: 'roots', key: 'C', bpm: 90, time: '4/4', capo: 0, duration: 60, strum: 'Piano: right hand melody from middle C, left hand roots',
+  tags: ['beginner','piano','3 chords','nursery'], status: 'full',
+  note: 'The melody starts on C and only uses the notes of the C major scale, so it is a good first tune for both hands.',
+  chordpro: `{c: Verse}
+[C]Twinkle, twinkle, [F]little [C]star
+[F]How I wonder [C]what you [G]are [C]
+[C]Up above the [F]world so [C]high [G]
+[C]Like a diamond [F]in the [C]sky [G]
+[C]Twinkle, twinkle, [F]little [C]star
+[F]How I wonder [C]what you [G]are [C]`
+},
+{
+  id: 'when-the-saints', title: 'When the Saints Go Marching In', artist: 'Traditional (spiritual)', year: null,
+  category: 'roots', key: 'G', bpm: 104, time: '4/4', capo: 0, duration: 120, strum: 'D - D U - U D U, swing it',
+  tags: ['spiritual','jazz','seventh chords','beginner'], status: 'full',
+  note: 'G7 and D7 pull back home to C and G: the sound of seventh chords.',
+  chordpro: `{c: Verse}
+Oh, when the [G]saints go marching in
+Oh, when the saints go marching [D7]in
+Oh Lord, I [G]want to [G7]be in that [C]number
+When the [G]saints go [D7]marching [G]in
+
+{c: Verse 2}
+Oh, when the [G]sun refuse to shine
+Oh, when the sun refuse to [D7]shine
+Oh Lord, I [G]want to [G7]be in that [C]number
+When the [G]sun re[D7]fuse to [G]shine`
+},
+
+/* ---------- chord charts (add your own lyrics) ---------- */
+{ id: 'hotel-california', title: 'Hotel California', artist: 'Eagles', year: 1976, category: 'rock-70s', key: 'Bm', bpm: 74, time: '4/4', capo: 7, duration: 390,
+  strum: 'Fingerpicked arpeggios', tags: ['classic rock','minor','8-bar loop','solo'], status: 'chords',
+  chordpro: `{c: Verse (one chord per bar)}
+[Em] [B] [D] [A] | [C] [G] [Am] [B]
+
+{c: Chorus}
+{soc}
+[C] [G] [B] [Em] | [C] [G] [Am] [B]
 {eoc}
 
 {c: Outro solo — same as verse}
-[Bm] [F#] [A] [E] | [G] [D] [Em] [F#]` },
+[Em] [B] [D] [A] | [C] [G] [Am] [B]` },
 { id: 'knockin-on-heavens-door', title: "Knockin' on Heaven's Door", artist: 'Bob Dylan', year: 1973, category: 'rock-70s', key: 'G', bpm: 68, time: '4/4', capo: 0, duration: 150,
   strum: 'D - D U - U D U', tags: ['beginner','4 chords','ballad'], status: 'chords',
   chordpro: `{c: Verse}
@@ -149,8 +205,8 @@ The [Em]hour I [D]first be[G]lieved`
   chordpro: `{c: Whole song}
 [D] [A] [Bm] [G]` },
 { id: 'every-breath-you-take', title: 'Every Breath You Take', artist: 'The Police', year: 1983, category: 'rock-80s', key: 'Ab', bpm: 117, time: '4/4', capo: 1, duration: 253,
-  strum: 'Arpeggiated eighths. Recording is in A♭; with capo 1, play the G shapes', tags: ['arpeggio','pop rock'], status: 'chords',
-  chordpro: `{c: Verse (shapes with capo 1)}
+  strum: 'Arpeggiated eighths', tags: ['arpeggio','pop rock'], status: 'chords',
+  chordpro: `{c: Verse}
 [G] [G] [Em] [Em] | [C] [D] [G] [G]` },
 { id: 'dont-stop-believin', title: "Don't Stop Believin'", artist: 'Journey', year: 1981, category: 'rock-80s', key: 'E', bpm: 119, time: '4/4', capo: 0, duration: 250,
   strum: 'Piano: steady eighths, left hand on the root', tags: ['piano','arena rock','4 chords'], status: 'chords',
@@ -158,8 +214,8 @@ The [Em]hour I [D]first be[G]lieved`
 [E] [B] [C#m] [A] | [E] [B] [G#m] [A]` },
 
 { id: 'wonderwall', title: 'Wonderwall', artist: 'Oasis', year: 1995, category: 'rock-90s', key: 'F#m', bpm: 87, time: '4/4', capo: 2, duration: 258,
-  strum: 'D - D U - U D U (16ths feel), capo 2', tags: ['britpop','acoustic','capo'], status: 'chords',
-  chordpro: `{c: Verse (shapes, capo 2)}
+  strum: 'D - D U - U D U (16ths feel)', tags: ['britpop','acoustic','capo'], status: 'chords',
+  chordpro: `{c: Verse}
 [Em7] [G] [Dsus4] [A7sus4]` },
 { id: 'smells-like-teen-spirit', title: 'Smells Like Teen Spirit', artist: 'Nirvana', year: 1991, category: 'rock-90s', key: 'Fm', bpm: 117, time: '4/4', capo: 0, duration: 301,
   strum: 'Power chords, loud chorus, muted verse', tags: ['grunge','power chords','riff'], status: 'chords',
@@ -184,8 +240,37 @@ The [Em]hour I [D]first be[G]lieved`
 [G] [B] [C] [Cm]` },
 
 /* ---------- Nepali wishlist: details only, chords to be added ---------- */
-{ id: 'kehi-mitho-baat-gara', title: 'Kehi Mitho Baat Gara', titleNe: 'केही मीठो बात गर', artist: 'Narayan Gopal', category: 'nepali-classic', status: 'wishlist', tags: ['swar samrat','adhunik'] },
-{ id: 'yo-samjhine-man-chha', title: 'Yo Samjhine Man Chha', titleNe: 'यो सम्झिने मन छ', artist: 'Narayan Gopal', category: 'nepali-classic', status: 'wishlist', tags: ['swar samrat','adhunik'] },
+{ id: 'kehi-mitho-baat-gara', title: 'Kehi Mitho Baat Gara', titleNe: 'केही मीठो बात गर', artist: 'Narayan Gopal', category: 'nepali-classic', key: 'D', capo: 2, time: '4/4', status: 'chords', tags: ['swar samrat','adhunik'],
+  strum: 'Slow ballad strum',
+  note: 'Chords from a community chord sheet, not verified: check against the recording before you rely on them. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro / Verse}
+[C] [Em7] [Am7] [Fsus2] | [C] [Em7] [Am7] [Fsus2]
+[F] [C] [F] [C] | [F] [Fm] [C] | [C] [Em7] [Am7] [Fsus2]
+
+{c: Chorus}
+{soc}
+[C] [Em7] [Am7] [Fsus2] | [C] [Em7] [Am7] [Fsus2]
+{eoc}
+
+{c: Outro}
+[F] [C] [F] [C] | [F] [Fm] [C] | [C] [Em7] [Am7] [Fsus2]` },
+{ id: 'yo-samjhine-man-chha', title: 'Yo Samjhine Man Chha', titleNe: 'यो सम्झिने मन छ', artist: 'Narayan Gopal', category: 'nepali-classic', key: 'Eb', capo: 3, time: '4/4', status: 'chords', tags: ['swar samrat','adhunik'],
+  strum: 'Gentle strum',
+  note: 'Chords from a community chord sheet, not verified: check against the recording before you rely on them. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Chorus}
+{soc}
+[C] [Dm] [C] [G] | [C] [Em] [C]
+[C] [Dm] [C] [G] | [C] [Em] [C]
+{eoc}
+
+{c: Verse (play twice)}
+[C] [Am] [Em] [C] | [Em] [Bbm] [F] | [C] [G] [C]
+[C] [Dm] [C] [G] | [C] [Em] [C]
+
+{c: Chorus}
+{soc}
+[C] [Dm] [C] [G] | [C] [Em] [C]
+{eoc}` },
 { id: 'gaun-gaun-bata-utha', title: 'Gaun Gaun Bata Utha', titleNe: 'गाउँ गाउँबाट उठ', artist: 'Ramesh & Rayan', category: 'nepali-classic', status: 'wishlist', tags: ['jana geet'] },
 { id: 'bhedako-oon-jasto', title: 'Bhedako Oon Jasto', titleNe: 'भेडाको ऊन जस्तो', artist: 'Nepathya', category: 'nepali-classic', status: 'wishlist', tags: ['folk rock'] },
 { id: 'wildfire', title: 'Wildfire', artist: 'Bipul Chettri', category: 'nepali-modern', status: 'wishlist', tags: ['folk','acoustic'] },

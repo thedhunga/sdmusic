@@ -513,8 +513,15 @@ function viewSong(id) {
   setNav('library');
   const tp = prefs.tp[id] || 0;
   const kt = M.transposeKey(s.key, tp);
-  const st = { tp, flats: kt ? kt.flats : false, numbers: !!prefs.numbers, baseKey: s.key };
-  const chords = songChords(s.chordpro).map(c => M.transposeChord(c, tp, st.flats));
+  // With a capo, charts are written as the shapes you finger; s.key is the key it sounds in.
+  // "Real chords" adds the capo back so piano players (or capo-less guitarists) get the sounding chords.
+  const capo = s.capo || 0;
+  const real = capo ? (prefs.real && id in prefs.real ? !!prefs.real[id] : prefs.inst === 'piano') : false;
+  const shift = tp + (real ? capo : 0);
+  const shownKey = M.transposeKey(s.key, tp - (real ? 0 : capo));
+  const shapeKey = capo ? (M.transposeKey(s.key, -capo) || {}).name : s.key;
+  const st = { tp: shift, flats: shownKey ? shownKey.flats : false, numbers: !!prefs.numbers, baseKey: shapeKey };
+  const chords = songChords(s.chordpro).map(c => M.transposeChord(c, shift, st.flats));
   const dur = s.duration || 210;
   const next = recommend(1, s)[0];
   session = { id, secs: 0, unflushed: 0, counted: false };
@@ -523,11 +530,12 @@ function viewSong(id) {
       <h1>${esc(s.title)}</h1>${s.titleNe ? `<div class="ne">${esc(s.titleNe)}</div>` : ''}
       <div class="by">${esc(s.artist || 'Unknown artist')}${s.year ? ' · ' + esc(s.year) : ''} · ${esc(catLabel(s.category))}</div>
       <div class="row" style="margin:0 0 10px;align-items:center"><button class="btn sm" id="like" aria-pressed="${!!profile.likes[s.id]}">${profile.likes[s.id] ? 'Liked' : 'Like'}</button><span class="mute" id="who" style="font-size:15px"></span>${profile.plays[s.id] ? `<span class="mute" style="font-size:15px">Played ${profile.plays[s.id].n}× · ${fmtTime(profile.plays[s.id].sec)}</span>` : ''}</div>
-      <div class="meta">${s.key ? `<span class="pill red">Key ${esc(kt ? kt.name : s.key)}${tp ? ` (orig. ${esc(s.key)})` : ''}</span>` : ''}${s.capo ? `<span class="pill">Capo ${esc(s.capo)}</span>` : ''}${s.bpm ? `<span class="pill">${esc(s.bpm)} bpm</span>` : ''}${s.time ? `<span class="pill">${esc(s.time)}</span>` : ''}${s.strum ? `<span class="pill blue">Strum: ${esc(s.strum)}</span>` : ''}</div>
+      <div class="meta">${s.key ? `<span class="pill red">Key ${esc(kt ? kt.name : s.key)}${tp ? ` (orig. ${esc(s.key)})` : ''}</span>` : ''}${capo ? `<span class="pill">${real ? `Capo ${esc(capo)} on the recording: showing real chords` : `Capo ${esc(capo)}: chords are capo shapes`}</span>` : ''}${s.bpm ? `<span class="pill">${esc(s.bpm)} bpm</span>` : ''}${s.time ? `<span class="pill">${esc(s.time)}</span>` : ''}${s.strum ? `<span class="pill blue">Strum: ${esc(s.strum)}</span>` : ''}</div>
     </div>
     ${s.status !== 'wishlist' ? `<div class="rail"><div class="wrap">
       <div class="tp" role="group" aria-label="Transpose"><button id="tdn" aria-label="Transpose down">−</button><output>${tp > 0 ? '+' + tp : tp} st</output><button id="tup" aria-label="Transpose up">+</button></div>
       <div class="seg" role="group" aria-label="Instrument"><button data-i="guitar" aria-pressed="${prefs.inst === 'guitar'}">Guitar</button><button data-i="piano" aria-pressed="${prefs.inst === 'piano'}">Piano</button></div>
+      ${capo ? `<div class="seg" role="group" aria-label="Capo chords"><button data-cv="shapes" aria-pressed="${!real}" title="Chords as you finger them with capo ${esc(capo)}">Capo shapes</button><button data-cv="real" aria-pressed="${real}" title="Chords as they sound, no capo">Real chords</button></div>` : ''}
       <button class="btn sm" id="num" aria-pressed="${st.numbers}" title="Show chords as numbers in the key (I, IV, V)">I–IV–V</button>
       <div class="seg" role="group" aria-label="Text size"><button id="fsd" aria-label="Smaller text">A−</button><button id="fsu" aria-label="Larger text">A+</button></div>
       ${s.bpm ? `<button class="btn sm" id="met" aria-pressed="false" title="Metronome at ${esc(s.bpm)} bpm">Metronome</button>` : ''}
@@ -565,11 +573,12 @@ function viewSong(id) {
   const re = () => { const y = scrollY; viewSong(id); scrollTo(0, y); };
   $('#tup') && $('#tup').addEventListener('click', () => { prefs.tp[id] = M.mod(tp + 1 + 6, 12) - 6; savePrefs(); re(); });
   $('#tdn') && $('#tdn').addEventListener('click', () => { prefs.tp[id] = M.mod(tp - 1 + 6, 12) - 6; savePrefs(); re(); });
-  app.querySelectorAll('[data-i]').forEach(b => b.addEventListener('click', () => { prefs.inst = b.dataset.i; savePrefs(); re(); }));
+  app.querySelectorAll('[data-i]').forEach(b => b.addEventListener('click', () => { prefs.inst = b.dataset.i; if (prefs.real) delete prefs.real[id]; savePrefs(); re(); }));
+  app.querySelectorAll('[data-cv]').forEach(b => b.addEventListener('click', () => { (prefs.real ||= {})[id] = b.dataset.cv === 'real'; savePrefs(); re(); }));
   $('#num') && $('#num').addEventListener('click', () => { prefs.numbers = !prefs.numbers; savePrefs(); re(); });
   $('#fsu') && $('#fsu').addEventListener('click', () => { prefs.fs = Math.min(2.2, +(prefs.fs + 0.1).toFixed(2)); savePrefs(); $('#sheet').style.setProperty('--fs', prefs.fs); });
   $('#fsd') && $('#fsd').addEventListener('click', () => { prefs.fs = Math.max(0.7, +(prefs.fs - 0.1).toFixed(2)); savePrefs(); $('#sheet').style.setProperty('--fs', prefs.fs); });
-  $('#prac') && $('#prac').addEventListener('click', () => { trainer.chords = songSequence(s.chordpro).map(c => M.transposeChord(c, tp, st.flats)).slice(0, 32); trainer.from = s.title; if (s.bpm) trainer.bpm = Math.min(120, s.bpm); });
+  $('#prac') && $('#prac').addEventListener('click', () => { trainer.chords = songSequence(s.chordpro).map(c => M.transposeChord(c, shift, st.flats)).slice(0, 32); trainer.from = s.title; if (s.bpm) trainer.bpm = Math.min(120, s.bpm); });
   if (!$('#go')) return;
   const rate = () => { const max = document.documentElement.scrollHeight - innerHeight; const start = $('#sheet').getBoundingClientRect().top + scrollY - 130; return Math.max(8, (max - Math.max(0, start)) / dur) * prefs.speed; };
   const step = t => {
@@ -804,7 +813,7 @@ function viewEditor(id) {
         <div class="field"><label for="f-category">Category</label><select id="f-category">${CATS.map(c => `<option value="${c.id}" ${c.id === s.category ? 'selected' : ''}>${esc(c.label)}</option>`).join('')}</select></div>
         <div class="field"><label for="f-year">Year</label><input type="number" id="f-year" inputmode="numeric" value="${esc(s.year || '')}"></div>
         <div class="field"><label for="f-key">Key</label><input type="text" id="f-key" value="${esc(s.key)}" placeholder="G or Am"></div>
-        <div class="field"><label for="f-capo">Capo</label><input type="number" id="f-capo" min="0" max="12" value="${esc(s.capo || 0)}"></div>
+        <div class="field"><label for="f-capo">Capo</label><input type="number" id="f-capo" min="0" max="12" value="${esc(s.capo || 0)}" aria-describedby="f-capo-h"><small class="mute" id="f-capo-h">With a capo, write the shapes you finger and set Key to the key it sounds in.</small></div>
         <div class="field"><label for="f-bpm">Tempo (bpm)</label><input type="number" id="f-bpm" value="${esc(s.bpm || '')}"></div>
         <div class="field"><label for="f-time">Time</label><input type="text" id="f-time" value="${esc(s.time)}"></div>
         <div class="field"><label for="f-dur">Length (m:ss)</label><input type="text" id="f-dur" value="${s.duration ? fmtTime(s.duration) : ''}" placeholder="3:30"></div>

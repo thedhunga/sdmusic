@@ -5,8 +5,8 @@ window.COURSES = {
     label: 'Guitar', blurb: 'From your first chord to barre chords and capo tricks. Drill each lesson until the changes are clean at the target tempo, then play the songs.',
     lessons: [
       { id: 'g1', title: 'Tune up and hold the guitar', chords: ['Em', 'E'], bpm: 50,
-        steps: ['Tune to E A D G B E (thickest to thinnest). Use the tuning notes below.', 'Thumb behind the neck, fingertips just behind the fret wire, wrist relaxed.', 'Play Em: two fingers. Strum all six strings and listen for buzz. Then add one finger to get E.'],
-        songs: [] },
+        steps: ['Tune to E A D G B E (thickest to thinnest). Use the tuning notes below.', 'Thumb behind the neck, fingertips just behind the fret wire, wrist relaxed.', 'Play Em: two fingers. Strum all six strings and listen for buzz. Then add one finger to get E.', 'Ready for a second chord? Drunken Sailor only needs Em and D.'],
+        songs: ['drunken-sailor'] },
       { id: 'g2', title: 'First minor chords: Em and Am', chords: ['Em', 'Am'], bpm: 60,
         steps: ['Am uses the same finger shape as E, moved one string over.', 'Lift and place all fingers together, like a stamp, never one at a time.', 'One strum per bar, then two, then four.'],
         songs: ['house-of-the-rising-sun'] },
@@ -38,7 +38,7 @@ window.COURSES = {
     lessons: [
       { id: 'p1', title: 'Find your way around the keys', chords: ['C'], bpm: 60, demo: [60, 62, 64, 65, 67, 69, 71, 72],
         steps: ['C is the white key just left of every group of two black keys.', 'Thumb on middle C. Play the C major scale: C D E F G A B C (use the demo).', 'Fingering, right hand: 1 2 3, thumb under, 1 2 3 4 5.'],
-        songs: [] },
+        songs: ['twinkle-twinkle'] },
       { id: 'p2', title: 'Major triads: C, F, G', chords: ['C', 'F', 'G'], bpm: 60,
         steps: ['A major triad = root + 4 semitones + 3 semitones. Count every key, black and white.', 'Right hand fingers 1-3-5 on C E G. Move the same shape to F A C and G B D.', 'This is I–IV–V in C, the same family of chords as Resham Firiri.'],
         songs: ['resham-firiri', 'amazing-grace'] },
@@ -56,7 +56,7 @@ window.COURSES = {
         songs: ['dont-stop-believin', 'every-breath-you-take'] },
       { id: 'p7', title: 'Seventh chords', chords: ['G7', 'Cmaj7', 'Am7', 'D7'], bpm: 70,
         steps: ['Dominant 7 = major triad + ♭7 (bluesy, wants to resolve).', 'Major 7 = major triad + 7 (dreamy).', 'Minor 7 = minor triad + ♭7 (soft, jazzy).'],
-        songs: [] },
+        songs: ['when-the-saints', 'amazing-grace'] },
       { id: 'p8', title: 'Minor keys and rock ballads', chords: ['Am', 'Em', 'Dm', 'G', 'F'], bpm: 90,
         steps: ['In A minor the home chord is Am; F and G lead back to it.', 'Play the left hand an octave lower for a fuller sound.', 'Losing My Religion and Hotel California live in minor keys.'],
         songs: ['losing-my-religion', 'hotel-california', 'scarborough-fair'] }

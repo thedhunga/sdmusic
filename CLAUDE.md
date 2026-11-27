@@ -7,6 +7,8 @@ unless there is a strong reason; it must keep working when opened straight from 
 ## Run
 - `python3 -m http.server 8000` (or `npx serve .`), then open http://localhost:8000
 - Opening `index.html` directly also works (no offline cache or install prompt then).
+- Tests: `node tests/check.js` (no deps) and `node tests/smoke.js` (Playwright).
+- Capo songs: chordpro holds capo shapes, `key` is the sounding key.
 
 ## Layout
 - `js/music.js`: chord parsing, transpose, guitar shapes, piano voicings, SVG diagrams, Web Audio
