@@ -89,19 +89,75 @@ How [G]precious [G7]did that [C]grace ap[G]pear
 The [Em]hour I [D]first be[G]lieved`
 },
 
-/* ---------- chord charts (add your own lyrics) ---------- */
-{ id: 'hotel-california', title: 'Hotel California', artist: 'Eagles', year: 1976, category: 'rock-70s', key: 'Bm', bpm: 74, time: '4/4', capo: 7, duration: 390,
-  strum: 'Fingerpicked arpeggios; capo 7 lets you use Em shapes', tags: ['classic rock','minor','8-bar loop','solo'], status: 'chords',
-  chordpro: `{c: Verse (one chord per bar)}
-[Bm] [F#] [A] [E] | [G] [D] [Em] [F#]
+{
+  id: 'drunken-sailor', title: 'What Shall We Do with the Drunken Sailor', artist: 'Traditional (sea shanty)', year: null,
+  category: 'roots', key: 'Em', bpm: 112, time: '4/4', capo: 0, duration: 120, strum: 'D - D - D - D -  (one strum per beat)',
+  tags: ['shanty','beginner','2 chords','minor'], status: 'full',
+  note: 'A two-chord shanty for your first week: Em and D. Keep strumming Em and move to D only where it is marked.',
+  chordpro: `{c: Verse}
+[Em]What shall we do with a drunken sailor?
+[D]What shall we do with a drunken sailor?
+[Em]What shall we do with a drunken sailor?
+[D]Ear-ly in the [Em]morning
 
 {c: Chorus}
 {soc}
-[G] [D] [F#] [Bm] | [G] [D] [Em] [F#]
+[Em]Way hay and up she rises
+[D]Way hay and up she rises
+[Em]Way hay and up she rises
+[D]Ear-ly in the [Em]morning
+{eoc}
+
+{c: Verse 2}
+[Em]Put him in the long boat till he's sober
+[D]Put him in the long boat till he's sober
+[Em]Put him in the long boat till he's sober
+[D]Ear-ly in the [Em]morning`
+},
+{
+  id: 'twinkle-twinkle', title: 'Twinkle, Twinkle, Little Star', artist: 'Jane Taylor (1806), traditional tune', year: 1806,
+  category: 'roots', key: 'C', bpm: 90, time: '4/4', capo: 0, duration: 60, strum: 'Piano: right hand melody from middle C, left hand roots',
+  tags: ['beginner','piano','3 chords','nursery'], status: 'full',
+  note: 'The melody starts on C and only uses the notes of the C major scale, so it is a good first tune for both hands.',
+  chordpro: `{c: Verse}
+[C]Twinkle, twinkle, [F]little [C]star
+[F]How I wonder [C]what you [G]are [C]
+[C]Up above the [F]world so [C]high [G]
+[C]Like a diamond [F]in the [C]sky [G]
+[C]Twinkle, twinkle, [F]little [C]star
+[F]How I wonder [C]what you [G]are [C]`
+},
+{
+  id: 'when-the-saints', title: 'When the Saints Go Marching In', artist: 'Traditional (spiritual)', year: null,
+  category: 'roots', key: 'G', bpm: 104, time: '4/4', capo: 0, duration: 120, strum: 'D - D U - U D U, swing it',
+  tags: ['spiritual','jazz','seventh chords','beginner'], status: 'full',
+  note: 'G7 and D7 pull back home to C and G: the sound of seventh chords.',
+  chordpro: `{c: Verse}
+Oh, when the [G]saints go marching in
+Oh, when the saints go marching [D7]in
+Oh Lord, I [G]want to [G7]be in that [C]number
+When the [G]saints go [D7]marching [G]in
+
+{c: Verse 2}
+Oh, when the [G]sun refuse to shine
+Oh, when the sun refuse to [D7]shine
+Oh Lord, I [G]want to [G7]be in that [C]number
+When the [G]sun re[D7]fuse to [G]shine`
+},
+
+/* ---------- chord charts (add your own lyrics) ---------- */
+{ id: 'hotel-california', title: 'Hotel California', artist: 'Eagles', year: 1976, category: 'rock-70s', key: 'Bm', bpm: 74, time: '4/4', capo: 7, duration: 390,
+  strum: 'Fingerpicked arpeggios', tags: ['classic rock','minor','8-bar loop','solo'], status: 'chords',
+  chordpro: `{c: Verse (one chord per bar)}
+[Em] [B] [D] [A] | [C] [G] [Am] [B]
+
+{c: Chorus}
+{soc}
+[C] [G] [B] [Em] | [C] [G] [Am] [B]
 {eoc}
 
 {c: Outro solo — same as verse}
-[Bm] [F#] [A] [E] | [G] [D] [Em] [F#]` },
+[Em] [B] [D] [A] | [C] [G] [Am] [B]` },
 { id: 'knockin-on-heavens-door', title: "Knockin' on Heaven's Door", artist: 'Bob Dylan', year: 1973, category: 'rock-70s', key: 'G', bpm: 68, time: '4/4', capo: 0, duration: 150,
   strum: 'D - D U - U D U', tags: ['beginner','4 chords','ballad'], status: 'chords',
   chordpro: `{c: Verse}
@@ -149,8 +205,8 @@ The [Em]hour I [D]first be[G]lieved`
   chordpro: `{c: Whole song}
 [D] [A] [Bm] [G]` },
 { id: 'every-breath-you-take', title: 'Every Breath You Take', artist: 'The Police', year: 1983, category: 'rock-80s', key: 'Ab', bpm: 117, time: '4/4', capo: 1, duration: 253,
-  strum: 'Arpeggiated eighths. Recording is in A♭; with capo 1, play the G shapes', tags: ['arpeggio','pop rock'], status: 'chords',
-  chordpro: `{c: Verse (shapes with capo 1)}
+  strum: 'Arpeggiated eighths', tags: ['arpeggio','pop rock'], status: 'chords',
+  chordpro: `{c: Verse}
 [G] [G] [Em] [Em] | [C] [D] [G] [G]` },
 { id: 'dont-stop-believin', title: "Don't Stop Believin'", artist: 'Journey', year: 1981, category: 'rock-80s', key: 'E', bpm: 119, time: '4/4', capo: 0, duration: 250,
   strum: 'Piano: steady eighths, left hand on the root', tags: ['piano','arena rock','4 chords'], status: 'chords',
@@ -158,8 +214,8 @@ The [Em]hour I [D]first be[G]lieved`
 [E] [B] [C#m] [A] | [E] [B] [G#m] [A]` },
 
 { id: 'wonderwall', title: 'Wonderwall', artist: 'Oasis', year: 1995, category: 'rock-90s', key: 'F#m', bpm: 87, time: '4/4', capo: 2, duration: 258,
-  strum: 'D - D U - U D U (16ths feel), capo 2', tags: ['britpop','acoustic','capo'], status: 'chords',
-  chordpro: `{c: Verse (shapes, capo 2)}
+  strum: 'D - D U - U D U (16ths feel)', tags: ['britpop','acoustic','capo'], status: 'chords',
+  chordpro: `{c: Verse}
 [Em7] [G] [Dsus4] [A7sus4]` },
 { id: 'smells-like-teen-spirit', title: 'Smells Like Teen Spirit', artist: 'Nirvana', year: 1991, category: 'rock-90s', key: 'Fm', bpm: 117, time: '4/4', capo: 0, duration: 301,
   strum: 'Power chords, loud chorus, muted verse', tags: ['grunge','power chords','riff'], status: 'chords',
@@ -183,20 +239,431 @@ The [Em]hour I [D]first be[G]lieved`
   chordpro: `{c: Whole song}
 [G] [B] [C] [Cm]` },
 
-/* ---------- Nepali wishlist: details only, chords to be added ---------- */
-{ id: 'kehi-mitho-baat-gara', title: 'Kehi Mitho Baat Gara', titleNe: 'केही मीठो बात गर', artist: 'Narayan Gopal', category: 'nepali-classic', status: 'wishlist', tags: ['swar samrat','adhunik'] },
-{ id: 'yo-samjhine-man-chha', title: 'Yo Samjhine Man Chha', titleNe: 'यो सम्झिने मन छ', artist: 'Narayan Gopal', category: 'nepali-classic', status: 'wishlist', tags: ['swar samrat','adhunik'] },
-{ id: 'gaun-gaun-bata-utha', title: 'Gaun Gaun Bata Utha', titleNe: 'गाउँ गाउँबाट उठ', artist: 'Ramesh & Rayan', category: 'nepali-classic', status: 'wishlist', tags: ['jana geet'] },
-{ id: 'bhedako-oon-jasto', title: 'Bhedako Oon Jasto', titleNe: 'भेडाको ऊन जस्तो', artist: 'Nepathya', category: 'nepali-classic', status: 'wishlist', tags: ['folk rock'] },
-{ id: 'wildfire', title: 'Wildfire', artist: 'Bipul Chettri', category: 'nepali-modern', status: 'wishlist', tags: ['folk','acoustic'] },
-{ id: 'hataarindai-bataasindai', title: 'Hataarindai Bataasindai', titleNe: 'हतारिँदै बतासिँदै', artist: 'Sajjan Raj Vaidya', category: 'nepali-modern', status: 'wishlist', tags: ['acoustic','pop'] },
-{ id: 'bardali', title: 'Bardali', titleNe: 'बार्दली', artist: 'Sushant KC', category: 'nepali-modern', status: 'wishlist', tags: ['pop'] }
+/* ---------- Nepali songs: chord charts from community sheets (unverified) ---------- */
+{ id: 'kehi-mitho-baat-gara', title: 'Kehi Mitho Baat Gara', titleNe: 'केही मीठो बात गर', artist: 'Narayan Gopal', category: 'nepali-classic', key: 'D', capo: 2, time: '4/4', status: 'chords', tags: ['swar samrat','adhunik'],
+  strum: 'Slow ballad strum',
+  note: 'Chords from a community chord sheet, not verified: check against the recording before you rely on them. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro / Verse}
+[C] [Em7] [Am7] [Fsus2] | [C] [Em7] [Am7] [Fsus2]
+[F] [C] [F] [C] | [F] [Fm] [C] | [C] [Em7] [Am7] [Fsus2]
+
+{c: Chorus}
+{soc}
+[C] [Em7] [Am7] [Fsus2] | [C] [Em7] [Am7] [Fsus2]
+{eoc}
+
+{c: Outro}
+[F] [C] [F] [C] | [F] [Fm] [C] | [C] [Em7] [Am7] [Fsus2]` },
+{ id: 'yo-samjhine-man-chha', title: 'Yo Samjhine Man Chha', titleNe: 'यो सम्झिने मन छ', artist: 'Narayan Gopal', category: 'nepali-classic', key: 'Eb', capo: 3, time: '4/4', status: 'chords', tags: ['swar samrat','adhunik'],
+  strum: 'Gentle strum',
+  note: 'Chords from a community chord sheet, not verified: check against the recording before you rely on them. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Chorus}
+{soc}
+[C] [Dm] [C] [G] | [C] [Em] [C]
+[C] [Dm] [C] [G] | [C] [Em] [C]
+{eoc}
+
+{c: Verse (play twice)}
+[C] [Am] [Em] [C] | [Em] [Bbm] [F] | [C] [G] [C]
+[C] [Dm] [C] [G] | [C] [Em] [C]
+
+{c: Chorus}
+{soc}
+[C] [Dm] [C] [G] | [C] [Em] [C]
+{eoc}` },
+{ id: 'hataarindai-bataasindai', title: 'Hataarindai Bataasindai', titleNe: 'हतारिँदै बतासिँदै', artist: 'Sajjan Raj Vaidya', category: 'nepali-modern', key: 'A', capo: 2, time: '4/4', status: 'chords',
+  tags: ['acoustic', 'pop'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Verse (x2)}
+[G] [D] [Cadd9] [G] [D]
+
+{c: Chorus (x2)}
+{soc}
+[Em] [G] [Cadd9] [G] [D] | [G] [D] [Cadd9] [G] [D]
+{eoc}
+
+{c: Verse 2}
+[Em] [G] [Cadd9] [G] [D] | [Em] [G] [C] [G] [D] [G]
+
+{c: Instrumental}
+[G] [D] [Cadd9] [G] [D] | [G] [D] [Cadd9] [G] [D]
+[Em] [G] [Cadd9] [G] [D] | [Em] [G] [Cadd9] [G] [D] [G]
+
+{c: Bridge (x2)}
+[Cadd9] [Em] [G] [D] | [Cadd9] [Em] [G] [D]
+
+{c: Instrumental 2}
+[C] [Em] [G] [D] | [C] [Em] [G] [D]
+[C] [Em] [G] [D] | [C] [Em] [G] [D] [G]
+
+{c: Then play the Verse, then Chorus}` },
+{ id: 'bardali', title: 'Bardali', titleNe: 'बार्दली', artist: 'Sushant KC (ft. Indrakala Rai)', category: 'nepali-modern', key: 'Eb', capo: 3, time: '4/4', status: 'chords',
+  tags: ['pop', 'duet'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[C] [G] [F] [G] [C] | [C] [G] [F] [G] [C]
+
+{c: Verse}
+[C] [G] [F] [G] [C] | [C] [G] [F] [G] [C]
+
+{c: Pre-chorus}
+[F] [C] [E] [Dm] [F] [G] | [F] [C] [E] [Dm] [F] [G]
+[F] [C] [E] [Dm] [F] [C] | [F] [C] [E] [Dm] [F] [G]
+
+{c: Chorus}
+{soc}
+[C] [G] [F] [G] [C] | [C] [G] [F] [G] [C]
+{eoc}
+
+{c: Bridge (x2)}
+[Dm] [F] [G] [F] [G]
+
+{c: Then play the Pre-chorus and Chorus again}` },
+{ id: 'samjhi-baschhu', title: 'Samjhi Baschhu', titleNe: 'सम्झी बस्छु', artist: '1974 AD', category: 'nepali-band', key: 'E', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'ballad'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[E] [F#m] [G#m] [A] | [C] [B] [B7] [E]
+
+{c: Verse}
+[E] [F#m] [G#m] [A] | [C] [B] [B7] [E]
+[E] [F#m] [G#m] [A]
+
+{c: Chorus}
+{soc}
+[B] [A] [B] [A] | [G#] [C#m] [B7] [E]
+{eoc}` },
+{ id: 'chari-1974-ad', title: 'Chari', titleNe: 'चरी', artist: '1974 AD', category: 'nepali-band', key: 'G', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'acoustic'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[G] [Cadd9] [G] [D] | [Dsus4] [Dsus2]
+
+{c: Verse (x2)}
+[G] [Cadd9] [G] [D] | [G] [D] [G] [Em]
+[G] [Em] [G]
+
+{c: Bridge}
+[C] [G] [C] [G] | [D] [G] [D] [G]
+
+{c: Verse 2}
+[C] [G] [C] [G] | [D] [G] [D] [G]
+[Em] [G] [Em] [G] | [Em] [G] [Em] [G]` },
+{ id: 'resham-nepathya', title: 'Resham', titleNe: 'रेशम', artist: 'Nepathya', category: 'nepali-band', key: 'B', capo: 4, time: '4/4', status: 'chords',
+  tags: ['band', 'folk rock'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[G] [G] [G]
+
+{c: Verse (x3)}
+[G] | [G] [Am]
+[D] [G] | [G]
+[G] [Am] | [D] [G]
+[Am] [D] | [D] [G]
+
+{c: Outro}
+[G] [G]` },
+{ id: 'taal-ko-pani', title: 'Taal Ko Pani', titleNe: 'तालको पानी', artist: 'Nepathya', category: 'nepali-band', key: 'B', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'folk rock'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Verse (x2)}
+[B] [C#m] | [B] [G#m] [B]
+[B] [C#m] [G#m] [B]
+
+{c: Ending}
+[B] [C#m] | [B] [G#m] [B]
+[B] [C#m] | [B] [G#m] [B]
+[B] [E] | [B] [E]
+[B] [E] [B] [E] | [B] [E] [B] [E]` },
+{ id: 'jeevan-ho-gham-chhaya', title: 'Jeevan Ho Gham Chhaya', titleNe: 'जीवन हो घाम छाया', artist: 'Nepathya', category: 'nepali-band', key: 'C', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'folk rock'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro (x2)}
+[C] [Dm] [F]
+
+{c: Verse (x4)}
+[C] [Dm] [F] [C]
+
+{c: Chorus}
+{soc}
+[C] [Em] [Am] [Dm] | [F] [G] [C]
+[Dm] [F] [C]
+{eoc}
+
+{c: Verse 2 (x2)}
+[C] [Dm] [F] [C]
+
+{c: Chorus (x2)}
+{soc}
+[C] [Em] [Am] [Dm] | [F] [G] [C]
+[Dm] [F] [C]
+{eoc}` },
+{ id: 'aagani-bhari', title: 'Aagani Bhari', titleNe: '', artist: 'Nepathya', category: 'nepali-band', key: 'C', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'folk rock'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Verse}
+[C] [F] [G] [C] | [F] [G] [C]
+
+{c: Chorus}
+{soc}
+[C] [F] [C] [F] | [G] [C] [F] [G]
+[C] [F] [G] [C]
+{eoc}
+
+{c: Outro}
+[C] [F] [C] [F] | [G] [C]` },
+{ id: 'gurasai-fulyo', title: 'Gurasai Fulyo', titleNe: '', artist: '1974 AD', category: 'nepali-band', key: 'A', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[A] [Bm] [D] [E] | [E] [A] [A]
+
+{c: Verse (x2)}
+[A] [D] [Bm] [A] | [C#m] [Bm] [E] [A]` },
+{ id: 'samjhine-mutu', title: 'Samjhine Mutu', titleNe: 'सम्झिने मुटु', artist: 'The Edge Band', category: 'nepali-band', key: 'A', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'ballad'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[A] [C#m] [Bm] | [A] [C#m] [Bm]
+[A] [C#m] [Bm] | [A]
+
+{c: Chorus}
+{soc}
+[A] [C#m] [Bm] [A] | [A] [C#m] [Bm] [A]
+[A] [F#m] [Bm] [D] | [A] [C#m] [D]
+[A] [C#m] [D] [A]
+{eoc}
+
+{c: Verse (x2)}
+[A] [C#m] [Bm] | [C#m] [D] [F#m] [Bm]
+[C#m] [Bm] [A] [C#m] [Bm] | [A] [C#m]
+[Bm] [A]
+
+{c: Solo}
+[A] [C#m] [D] | [A] [C#m] [D]
+[A] [C#m] [D] | [A]` },
+{ id: 'dhun', title: 'Dhun', titleNe: 'धुन', artist: 'Rockheads', category: 'nepali-band', key: 'F', capo: 5, time: '4/4', status: 'chords',
+  tags: ['band', 'rock'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[C] [G]
+
+{c: Verse 1}
+[C] [Fmaj7] [G] [G7] | [C] [Fmaj7] [G] [C]
+
+{c: Chorus}
+{soc}
+[F] [C] [F] [G7] | [C] [F] [C] [F]
+[G] [G7] [C]
+{eoc}
+
+{c: Verse 2}
+[C] [F] [Dm] [C] | [C] [F] [G] [C]
+
+{c: Bridge}
+[C] [G] [C] [G]
+
+{c: Outro}
+[F] [C] [F] [G7] | [C] [F] [C] [F]
+[Dm] [G7] [C]` },
+{ id: 'mero-lagi', title: 'Mero Lagi', titleNe: 'मेरो लागि', artist: 'Cobweb', category: 'nepali-band', key: 'C#m', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'rock'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[C#m] [A]
+
+{c: Verse}
+[C#m] [A] | [C#m] [A]
+
+{c: Chorus (x2)}
+{soc}
+[E] [F#m] [A] [B] | [E] [F#m] [A] [B]
+[C#m] [A] [E] [E] | [C#m] [A] [B] [B]
+[C#m] [A] [E] [E] | [C#m] [A] [B] [B]
+{eoc}` },
+{ id: 'asaar', title: 'Asaar', titleNe: 'असार', artist: 'Bipul Chettri', category: 'nepali-modern', key: 'A', capo: 0, time: '4/4', status: 'chords',
+  tags: ['acoustic', 'folk'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[A] [F#m] [E]
+
+{c: Verse 1}
+[A] [A/D] [A] [A/D] | [F#m] [D] [E] [D]
+[A] [D] [A] [D] | [A] [D] [A] [F#m]
+[F#m] [F#m] [F#m] [E] | [F#m] [D] [A] [E]
+
+{c: Chorus}
+{soc}
+[F#m] [D] [A] [E] | [F#m] [D] [A] [E]
+[F#m] [D] [A] [E] | [F#m] [D] [A] [E]
+[F#m] [D] [F#m] [D] | [E] [E] [A]
+{eoc}
+
+{c: Verse 2}
+[A] [D] [A] [D] | [F#m] [D] [E] [D]
+[A] [D] [A] [D] | [A] [A] [A] [D] [A]
+
+{c: Outro}
+[A] [D] [A] [D]` },
+{ id: 'sasto-mutu', title: 'Sasto Mutu', titleNe: 'सस्तो मुटु', artist: 'Sajjan Raj Vaidya', category: 'nepali-modern', key: 'G', capo: 0, time: '4/4', status: 'chords',
+  tags: ['acoustic', '2 chords', 'beginner'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[Em7] [G] [D]
+
+{c: Verse (x3)}
+[G] [Cadd9] | [G] [Cadd9]
+
+{c: Interlude}
+[G] [Cadd9]` },
+{ id: 'kuraakaani', title: 'Kuraakaani', titleNe: 'कुराकानी', artist: 'Sajjan Raj Vaidya', category: 'nepali-modern', key: 'C', capo: 0, time: '4/4', status: 'chords',
+  tags: ['acoustic', '4 chords'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Verse (x2)}
+[C] [F] | [C] [F]
+[C] [F] | [C] [F]
+[Am] [F] | [C] [G]
+[Am] [F] | [C] [G]
+
+{c: Chorus}
+{soc}
+[Am] [F] | [C] [G]
+[Am] [F] | [C] [G]
+[C] [F] | [C] [F]
+[C] [F] | [C] [F]
+{eoc}` },
+{ id: 'yo-mann-ta-mero-nepali-ho', title: 'Yo Mann Ta Mero Nepali Ho', titleNe: 'यो मन त मेरो नेपाली हो', artist: '1974 AD', category: 'nepali-band', key: 'C', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'patriotic', 'sing-along'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro (x2)}
+[C] [Em7] [Am] [F] | [Dm] [G7] [G7] [C] [C]
+
+{c: Verse (x2)}
+[C] [Em] [Am] [F] | [Dm] [G] [F] [C]
+
+{c: Verse, second half}
+[E] [Am] [F] [G] | [C] [F] [G] [C]
+[E] [G] [C]
+
+{c: Verse variation}
+[C] [Em] [Am] [F] | [Dm] [G] [F] [C]
+[C] [Em] [Am] [F] | [Dm] [G] [C]
+
+{c: Bridge}
+[E5] [A5] [G5] [C]
+
+{c: Riff}
+[A5] [A5] [G5] [C5] | [C5] [A5] [A5] [G5]
+[F5] [G5]
+
+{c: Solo}
+[C] [Em] [Am] [Am] | [F] [G] [C]` },
+{ id: 'phool-ko-aankha-ma', title: 'Phool Ko Aankha Ma', titleNe: 'फूलको आँखामा', artist: 'Ani Choying Drolma', category: 'nepali-modern', key: 'C', capo: 0, time: '4/4', status: 'chords',
+  tags: ['devotional', 'sing-along'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[Am] [Em] | [C] [Dm]
+[Dm] [C] | [G] [C]
+[C] [F] | [C] [Dm]
+[Dm] [C] | [G] [C]
+
+{c: Verse (x2)}
+[C] [Dm] | [C] [Dm]
+[Am] [C] | [G] [C]
+[C] [F] | [C] [Dm]
+[Dm] [C] | [G] [C]` },
+{ id: 'timi-pari', title: 'Timi Pari', titleNe: '', artist: 'Kandara', category: 'nepali-band', key: 'C', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'folk'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[C] [Dm] | [Dm] [F] [G] [C]
+[C] [Dm] | [Dm] [F] [G] [C]
+[F] [G] [C] | [F] [G] [C]
+[Dm] [G] [C] | [Dm] [G] [C]
+
+{c: Verse (x2)}
+[C] [Dm] | [C] [Dm]
+[F] [G] [F] [G] | [C] [Dm]
+[F] [C]` },
+{ id: 'bhedi-gothaima', title: 'Bhedi Gothaima', titleNe: '', artist: 'Kandara', category: 'nepali-band', key: 'A', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'folk'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro (x2)}
+[A] [F#m] [Bm] [E]
+
+{c: Opening}
+[A] | [F#m] [Bm]
+[D] [E] [A] | [Bm] [E]
+[A] [D]
+
+{c: Verse (x2)}
+[A] | [F#m] [Bm]
+[A] [F#m] [Bm] | [D] [E]
+[Bm] [A] | [D] [A]
+[E] [A] | [Bm] [E]
+[A] [D]
+
+{c: Outro}
+[A] | [F#m] [Bm]
+[D] [E] [A] | [Bm] [E]
+[A] [D]` },
+{ id: 'timi-bhane', title: 'Timi Bhane', titleNe: 'तिमी भने', artist: 'Albatross', category: 'nepali-band', key: 'E', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'rock'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Intro}
+[E] [F#add11] [Asus2] | [E] [F#add11] [Asus2] [Asus2]
+
+{c: Verse (x2)}
+[E5] [E5] [C#madd9] [C#5] | [C#madd9] [C#5] [Asus2] [F#add11] [Asus2]
+
+{c: Chorus}
+{soc}
+[C#5] [B5] [C#5] [F#add11] | [Asus2] [C#5] [Asus2]
+[E] [F#add11] [Asus2] [Asus2]
+{eoc}` },
+{ id: 'yo-dil-mero', title: 'Yo Dil Mero', titleNe: '', artist: 'The Edge Band', category: 'nepali-band', key: 'C', capo: 0, time: '4/4', status: 'chords',
+  tags: ['band', 'ballad'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Verse}
+[C] [F] [G] [C] | [C] [F] [G] [C]
+[C] [G] [C] [Dm] | [Am] [F] [F]
+
+{c: Pre-chorus (x2)}
+[Fm] [F] [C]
+
+{c: Chorus (x2)}
+{soc}
+[C] [F] [C]
+{eoc}` },
+{ id: 'gahiro-gahiro', title: 'Gahiro Gahiro', titleNe: 'गहिरो गहिरो', artist: 'Bipul Chettri', category: 'nepali-modern', key: 'Am', capo: 0, time: '4/4', status: 'chords',
+  tags: ['acoustic', 'folk', 'minor'],
+  note: 'Chords from a community chord sheet, not verified: check against the recording. Lyrics are copyrighted, so add your own.',
+  chordpro: `{c: Verse}
+[Am] [F] [C] [G] | [Am] [F] [G]
+[Am] [F] [C] [G] | [Am] [F] [G]
+[Am] [F] | [Am] [F]
+[C] [Em] [F] [G] | [Am] [F]
+
+{c: Chorus}
+{soc}
+[Am] [F] [C] [G] | [Am] [F] [G]
+[Am] [F] [C] [G] | [Am] [F] [G]
+[Am] [F] | [Am] [F]
+[C] [Em] [F] [G]
+{eoc}
+
+{c: Verse 2}
+[Am] [F] | [Am] [F]
+[C] [Em] [F] [G] | [Am] [F] [C] [G]
+[Am] [F] [G] | [Am] [F] [C] [G]
+[Am] [F] [G]` },
 ];
 
 window.CATEGORIES = [
   { id: 'nepali-folk',    label: 'Nepali folk',     ne: 'लोक गीत' },
   { id: 'nepali-classic', label: 'Nepali classics', ne: 'पुराना गीत' },
   { id: 'nepali-modern',  label: 'Nepali modern',   ne: 'नयाँ गीत' },
+  { id: 'nepali-band',    label: 'Nepali bands',    ne: 'ब्यान्ड' },
   { id: 'rock-70s',       label: '70s rock' },
   { id: 'rock-80s',       label: '80s rock' },
   { id: 'rock-90s',       label: '90s rock' },

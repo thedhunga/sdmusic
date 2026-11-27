@@ -29,7 +29,9 @@ The installed app works offline once it has loaded (the service worker caches it
 | `js/music.js` | Chord parsing, transposing, guitar shapes, piano voicings, SVG diagrams, audio (piano tone, plucked guitar, metronome) |
 | `js/songs.js` | Starter library and categories |
 | `js/lessons.js` | Guitar and piano courses |
-| `sw.js`, `manifest.webmanifest`, `icon.svg` | Installable app and offline cache |
+| `sw.js`, `manifest.webmanifest`, `icon.svg`, `icons/` | Installable app and offline cache |
+| `fonts/` | Mukta font (SIL OFL), bundled so nothing loads from third parties |
+| `tests/` | `check.js` (data and theory checks) and `smoke.js` (browser test) |
 | `js/app.js` | The app: songbook, song view, auto-scroll, Learn page, editor, sharing and recommendations |
 
 ## Songs
@@ -54,12 +56,25 @@ Each song has a `status`:
 - `chords`: chord chart only. The lyrics are copyrighted, so people add their own.
 - `wishlist`: details only, waiting for someone to add the chords.
 
+**Capo:** when a song has a capo, write the chords as the shapes you finger and set
+`key` to the key it sounds in. The song view has a **Capo shapes / Real chords** switch;
+piano starts on real chords.
+
+## Tests
+
+```sh
+node tests/check.js     # no dependencies
+node tests/smoke.js     # needs Playwright installed
+```
+
 ## Shared songbook and private progress
 
 When it runs as a Claude artifact, the app uses the artifact's database:
 
 - `songs/<id>`: the **shared songbook**. Everyone the owner gives Contributor access
   can add and edit songs.
+- `favs/<key>`: **favourites by name**. Tap ☆ Favourite on a song, type your name once,
+  and everyone can pick your name in the songbook to see your favourites.
 - `data/users/<id>/profile`: each person's **private** plays, likes, lesson progress
   and practice minutes. These drive the "For you" suggestions.
 

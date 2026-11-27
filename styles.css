@@ -60,6 +60,9 @@ textarea{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Noto Sans Devanagari
 .chips{display:flex;gap:6px;overflow-x:auto;padding:14px 0 4px;scrollbar-width:none}
 .chips button{flex:none;border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 14px;min-height:40px;font-weight:600;font-size:15px;white-space:nowrap}
 .chips button[aria-pressed=true]{background:var(--red);color:#fff;border-color:var(--red)}
+.chips.favs{padding-top:6px;align-items:center}.chips-l{flex:none;font-weight:700;font-size:15px;margin-right:4px}
+.linkish{background:none;border:0;padding:4px;color:var(--mute,#666);text-decoration:underline;font:inherit;font-size:14px;cursor:pointer;min-height:40px}
+#fav[aria-pressed=true]{background:var(--red);color:#fff;border-color:var(--red)}
 .shelf{margin:26px 0 8px;display:flex;align-items:baseline;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:6px}
 .shelf h2{margin:0}
 .shelf .ne{color:var(--red);font-weight:700}

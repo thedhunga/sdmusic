@@ -67,6 +67,36 @@ function allSongs() {
 const getSong = id => allSongs().find(s => s.id === id);
 const canDelete = s => s.source === 'user' && (amOwner || !s.addedBy || s.addedBy === myId || !db);
 
+/* ---------------- favourites by name (shared: everyone sees whose favourites are whose) ---------------- */
+// favs: key -> { name, songs: { songId: timestamp } }. Stored in the shared db at favs/<key>, device copy as fallback.
+let favs = (() => { try { return JSON.parse(localStorage.getItem('sur.favs') || '{}'); } catch { return {}; } })();
+const normName = n => String(n ?? '').replace(/\s+/g, ' ').trim().slice(0, 40);
+function favKey(name) {
+  const n = normName(name).toLowerCase(); let h = 2166136261;
+  for (const ch of n) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  const base = slug(n); return (base === 'song' ? 'p' : base.slice(0, 30)) + '-' + h.toString(36);
+}
+function cleanFav(v) {
+  if (!v || typeof v !== 'object') return null;
+  const name = normName(v.name); if (!name) return null;
+  const songs = {};
+  if (v.songs && typeof v.songs === 'object') for (const [id, t] of Object.entries(v.songs).slice(0, 500)) if (ID_RE.test(id) && Number.isFinite(+t)) songs[id] = +t;
+  return { name, songs };
+}
+function saveFavsLocal() { try { localStorage.setItem('sur.favs', JSON.stringify(favs)); } catch {} }
+const favPeople = () => Object.entries(favs).filter(([, f]) => Object.keys(f.songs).length).sort((a, b) => a[1].name.localeCompare(b[1].name));
+const favNamesFor = id => favPeople().filter(([, f]) => f.songs[id]).map(([, f]) => f.name);
+async function toggleFav(id, name) {
+  const key = favKey(name);
+  const f = favs[key] = cleanFav(favs[key]) || { name: normName(name), songs: {} };
+  f.name = normName(name);
+  const on = !f.songs[id];
+  if (on) f.songs[id] = Date.now(); else delete f.songs[id];
+  saveFavsLocal();
+  if (db && !readOnly) { try { await db.collection('favs').doc(key).set({ name: f.name, songs: f.songs }); } catch { toast('Saved on this device only'); } }
+  return on;
+}
+
 /* ---------------- personal profile: plays, likes, lessons, practice time (private per person) ---------------- */
 const localDay = (d = new Date()) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 function emptyProfile() { return { v: 1, plays: {}, likes: {}, lessons: {}, days: {}, drill: {} }; }
@@ -133,6 +163,21 @@ function knownChords() {
     userSongs = next; saveLocal();
     if (!editing && !location.hash.startsWith('#song-')) route();
   }, () => { clearTimeout(timer); db = null; storeNote = 'Saved on this device'; });
+  let favFirst = true;
+  db.collection('favs').onSnapshot(snap => {
+    if (snap.metadata.fromCache) return;
+    const next = {};
+    snap.docs.forEach(d => { const f = cleanFav(d.data()); if (f) next[d.id] = f; });
+    if (favFirst) {
+      favFirst = false;
+      const pending = Object.entries(favs).filter(([k]) => !next[k]);
+      pending.forEach(([k, f]) => { next[k] = f; });
+      if (pending.length && !readOnly) setTimeout(() => pending.forEach(([k, f]) => db.collection('favs').doc(k).set(f).catch(() => {})), 0);
+    }
+    favs = next; saveFavsLocal();
+    if (editing) return;
+    if (location.hash.startsWith('#song-')) refreshFavUI(); else if (!location.hash || location.hash === '#library') route();
+  }, () => {});
   if (myId) {
     profRef = db.collection('data/users/' + myId).doc('profile');
     let got = false;
@@ -382,23 +427,27 @@ function viewLibrary() {
         <button data-f="liked" aria-pressed="${libFilter === 'liked'}">Liked ${songs.filter(s => profile.likes[s.id]).length}</button>
         <button data-f="mine" aria-pressed="${libFilter === 'mine'}">Added by me ${songs.filter(isMine).length}</button>
         <button data-f="community" aria-pressed="${libFilter === 'community'}">Community ${songs.filter(s => s.source === 'user').length}</button>
-        <button data-f="wishlist" aria-pressed="${libFilter === 'wishlist'}">Wishlist ${songs.filter(s => s.status === 'wishlist').length}</button>
-      </div></div>
+        ${songs.some(s => s.status === 'wishlist') ? `<button data-f="wishlist" aria-pressed="${libFilter === 'wishlist'}">Wishlist ${songs.filter(s => s.status === 'wishlist').length}</button>` : ''}
+      </div>
+      ${favPeople().length ? `<div class="chips favs" role="group" aria-label="Favourites by person"><span class="chips-l">★ Favourites of</span>${favPeople().map(([k, f]) => `<button data-f="fav:${esc(k)}" aria-pressed="${libFilter === 'fav:' + k}">${esc(f.name)} ${songs.filter(s => f.songs[s.id]).length}</button>`).join('')}</div>` : ''}
+    </div>
     <div id="res"></div>
     <div class="tools"><span class="mute">${esc(storeNote)}.</span><button class="btn sm pri" id="inst" hidden>Install app</button><button class="btn sm" id="exp">Back up songs</button><button class="btn sm" id="imp">Restore or import</button>${amOwner ? '<button class="btn sm" id="shr">Share with friends</button>' : ''}</div>
   </div>`;
   const draw = () => {
     const q = libQuery.toLowerCase().trim();
     const F = { all: () => true, mine: isMine, community: s => s.source === 'user', liked: s => profile.likes[s.id], wishlist: s => s.status === 'wishlist' };
-    let list = songs.filter(F[libFilter] || (s => s.category === libFilter));
+    const fav = libFilter.startsWith('fav:') ? favs[libFilter.slice(4)] : null;
+    let list = fav ? songs.filter(s => fav.songs[s.id]).sort((a, b) => fav.songs[b.id] - fav.songs[a.id]) : songs.filter(F[libFilter] || (s => s.category === libFilter));
     if (q) list = list.filter(s => [s.title, s.titleNe, s.artist, s.year, catLabel(s.category), ...(s.tags || []), ...songChords(s.chordpro)].join(' ').toLowerCase().includes(q));
     const res = $('#res');
+    if (!list.length && libFilter.startsWith('fav:') && !q) { res.innerHTML = `<div class="empty"><p>No favourites here yet.</p></div>`; return; }
     if (!list.length) { res.innerHTML = `<div class="empty"><p>No songs match “${esc(libQuery)}”.</p><a class="btn pri" href="#add">Add it yourself</a></div>`; return; }
     if (libFilter === 'all' && !q) {
       const recs = recommend(4), tl = tasteLine(), again = playAgain();
       res.innerHTML = `<div class="shelf"><h2>For you</h2><span class="ne">${tl ? '' : 'start here'}</span></div>${tl ? `<p class="mute taste">${tl}</p>` : ''}<div class="list">${recs.map(cardWhy).join('')}</div>`
         + (again.length ? `<div class="shelf"><h2>Play again</h2></div><div class="list">${again.map(cardWhy).join('')}</div>` : '') + CATS.map(c => { const rank = { full: 0, chords: 1, wishlist: 2 }; const l = list.filter(s => s.category === c.id).sort((a, b) => rank[a.status] - rank[b.status]); return l.length ? `<div class="shelf"><h2>${esc(c.label)}</h2>${c.ne ? `<span class="ne">${esc(c.ne)}</span>` : ''}</div><div class="list">${l.map(card).join('')}</div>` : ''; }).join('');
-    } else res.innerHTML = `<div class="list">${list.map(card).join('')}</div>`;
+    } else res.innerHTML = (fav ? `<div class="shelf"><h2>${esc(fav.name)}’s favourites</h2><span class="ne">newest first</span></div>` : '') + `<div class="list">${list.map(card).join('')}</div>`;
   };
   draw();
   $('#q').addEventListener('input', e => { libQuery = e.target.value; draw(); });
@@ -473,6 +522,33 @@ function dialog(html, bind) {
 }
 function closeDialog() { const d = $('.dialog'); d && d.remove(); }
 
+/* favourites UI */
+function refreshFavUI() {
+  const id = decodeURIComponent(location.hash.slice(6)), b = $('#fav'), by = $('#favby');
+  if (!b || !by) return;
+  const me = prefs.favName ? favs[favKey(prefs.favName)] : null, on = !!(me && me.songs[id]);
+  b.setAttribute('aria-pressed', on);
+  b.textContent = on ? `★ ${prefs.favName}’s favourite` : '☆ Favourite';
+  b.title = prefs.favName ? `Favourite as ${prefs.favName}` : 'Mark as a favourite under your name';
+  const names = favNamesFor(id);
+  by.textContent = names.length ? 'Favourite of ' + names.join(', ') : '';
+  let sw = $('#favwho');
+  if (prefs.favName && !sw) { sw = document.createElement('button'); sw.id = 'favwho'; sw.className = 'linkish'; sw.textContent = 'not ' + prefs.favName + '?'; b.after(sw); sw.addEventListener('click', () => askFavName(() => { route(); })); }
+  else if (sw) sw.textContent = 'not ' + prefs.favName + '?';
+}
+function askFavName(then) {
+  const names = favPeople().map(([, f]) => f.name);
+  dialog(`<h2>Whose favourite?</h2><p>Type your name. Everyone using this songbook can then pick your name to see your favourites.</p>
+    <div class="field"><label for="fname">Your name</label><input id="fname" maxlength="40" autocomplete="nickname" value="${esc(prefs.favName || '')}"></div>
+    ${names.length ? `<p class="mute">Or pick a name:</p><div class="chips" style="flex-wrap:wrap">${names.map(n => `<button data-n="${esc(n)}">${esc(n)}</button>`).join('')}</div>` : ''}
+    <div class="row"><button class="btn pri" id="fok">Save</button><button class="btn" data-close>Cancel</button></div>`, box => {
+    const done = n => { n = normName(n); if (!n) { box.querySelector('#fname').focus(); return; } prefs.favName = n; savePrefs(); closeDialog(); then(n); };
+    box.querySelector('#fok').addEventListener('click', () => done(box.querySelector('#fname').value));
+    box.querySelector('#fname').addEventListener('keydown', e => { if (e.key === 'Enter') done(e.target.value); });
+    box.querySelectorAll('[data-n]').forEach(x => x.addEventListener('click', () => done(x.dataset.n)));
+  });
+}
+
 /* ---------------- SONG ---------------- */
 let scroll = { on: false, raf: 0, last: 0, acc: 0 }, metro = null, wake = null;
 let session = null, drillSecs = 0;
@@ -513,8 +589,15 @@ function viewSong(id) {
   setNav('library');
   const tp = prefs.tp[id] || 0;
   const kt = M.transposeKey(s.key, tp);
-  const st = { tp, flats: kt ? kt.flats : false, numbers: !!prefs.numbers, baseKey: s.key };
-  const chords = songChords(s.chordpro).map(c => M.transposeChord(c, tp, st.flats));
+  // With a capo, charts are written as the shapes you finger; s.key is the key it sounds in.
+  // "Real chords" adds the capo back so piano players (or capo-less guitarists) get the sounding chords.
+  const capo = s.capo || 0;
+  const real = capo ? (prefs.real && id in prefs.real ? !!prefs.real[id] : prefs.inst === 'piano') : false;
+  const shift = tp + (real ? capo : 0);
+  const shownKey = M.transposeKey(s.key, tp - (real ? 0 : capo));
+  const shapeKey = capo ? (M.transposeKey(s.key, -capo) || {}).name : s.key;
+  const st = { tp: shift, flats: shownKey ? shownKey.flats : false, numbers: !!prefs.numbers, baseKey: shapeKey };
+  const chords = songChords(s.chordpro).map(c => M.transposeChord(c, shift, st.flats));
   const dur = s.duration || 210;
   const next = recommend(1, s)[0];
   session = { id, secs: 0, unflushed: 0, counted: false };
@@ -522,12 +605,13 @@ function viewSong(id) {
     <div class="wrap shead"><a class="back" href="#library">← All songs</a>
       <h1>${esc(s.title)}</h1>${s.titleNe ? `<div class="ne">${esc(s.titleNe)}</div>` : ''}
       <div class="by">${esc(s.artist || 'Unknown artist')}${s.year ? ' · ' + esc(s.year) : ''} · ${esc(catLabel(s.category))}</div>
-      <div class="row" style="margin:0 0 10px;align-items:center"><button class="btn sm" id="like" aria-pressed="${!!profile.likes[s.id]}">${profile.likes[s.id] ? 'Liked' : 'Like'}</button><span class="mute" id="who" style="font-size:15px"></span>${profile.plays[s.id] ? `<span class="mute" style="font-size:15px">Played ${profile.plays[s.id].n}× · ${fmtTime(profile.plays[s.id].sec)}</span>` : ''}</div>
-      <div class="meta">${s.key ? `<span class="pill red">Key ${esc(kt ? kt.name : s.key)}${tp ? ` (orig. ${esc(s.key)})` : ''}</span>` : ''}${s.capo ? `<span class="pill">Capo ${esc(s.capo)}</span>` : ''}${s.bpm ? `<span class="pill">${esc(s.bpm)} bpm</span>` : ''}${s.time ? `<span class="pill">${esc(s.time)}</span>` : ''}${s.strum ? `<span class="pill blue">Strum: ${esc(s.strum)}</span>` : ''}</div>
+      <div class="row" style="margin:0 0 10px;align-items:center"><button class="btn sm" id="fav" aria-pressed="false">☆ Favourite</button><button class="btn sm" id="like" aria-pressed="${!!profile.likes[s.id]}">${profile.likes[s.id] ? 'Liked' : 'Like'}</button><span class="mute" id="favby" style="font-size:15px"></span><span class="mute" id="who" style="font-size:15px"></span>${profile.plays[s.id] ? `<span class="mute" style="font-size:15px">Played ${profile.plays[s.id].n}× · ${fmtTime(profile.plays[s.id].sec)}</span>` : ''}</div>
+      <div class="meta">${s.key ? `<span class="pill red">Key ${esc(kt ? kt.name : s.key)}${tp ? ` (orig. ${esc(s.key)})` : ''}</span>` : ''}${capo ? `<span class="pill">${real ? `Capo ${esc(capo)} on the recording: showing real chords` : `Capo ${esc(capo)}: chords are capo shapes`}</span>` : ''}${s.bpm ? `<span class="pill">${esc(s.bpm)} bpm</span>` : ''}${s.time ? `<span class="pill">${esc(s.time)}</span>` : ''}${s.strum ? `<span class="pill blue">Strum: ${esc(s.strum)}</span>` : ''}</div>
     </div>
     ${s.status !== 'wishlist' ? `<div class="rail"><div class="wrap">
       <div class="tp" role="group" aria-label="Transpose"><button id="tdn" aria-label="Transpose down">−</button><output>${tp > 0 ? '+' + tp : tp} st</output><button id="tup" aria-label="Transpose up">+</button></div>
       <div class="seg" role="group" aria-label="Instrument"><button data-i="guitar" aria-pressed="${prefs.inst === 'guitar'}">Guitar</button><button data-i="piano" aria-pressed="${prefs.inst === 'piano'}">Piano</button></div>
+      ${capo ? `<div class="seg" role="group" aria-label="Capo chords"><button data-cv="shapes" aria-pressed="${!real}" title="Chords as you finger them with capo ${esc(capo)}">Capo shapes</button><button data-cv="real" aria-pressed="${real}" title="Chords as they sound, no capo">Real chords</button></div>` : ''}
       <button class="btn sm" id="num" aria-pressed="${st.numbers}" title="Show chords as numbers in the key (I, IV, V)">I–IV–V</button>
       <div class="seg" role="group" aria-label="Text size"><button id="fsd" aria-label="Smaller text">A−</button><button id="fsu" aria-label="Larger text">A+</button></div>
       ${s.bpm ? `<button class="btn sm" id="met" aria-pressed="false" title="Metronome at ${esc(s.bpm)} bpm">Metronome</button>` : ''}
@@ -553,6 +637,11 @@ function viewSong(id) {
     </div></div>` : ''}`;
 
   // events
+  refreshFavUI();
+  $('#fav').addEventListener('click', () => {
+    const go = name => toggleFav(id, name).then(on => { refreshFavUI(); toast(on ? `Added to ${normName(name)}’s favourites` : `Removed from ${normName(name)}’s favourites`); });
+    prefs.favName ? go(prefs.favName) : askFavName(go);
+  });
   $('#like').addEventListener('click', e => { if (profile.likes[id]) delete profile.likes[id]; else profile.likes[id] = Date.now(); touchProfile(); const on = !!profile.likes[id]; e.currentTarget.setAttribute('aria-pressed', on); e.currentTarget.textContent = on ? 'Liked' : 'Like'; toast(on ? 'Liked: your suggestions will lean this way' : 'Removed from liked songs'); });
   if (s.addedBy && userApi) userApi.profiles([s.addedBy]).then(ps => { const p = ps[s.addedBy], w = $('#who'); if (w && p) w.textContent = 'Added by ' + (p.isMe ? 'you' : p.name || 'a contributor'); }).catch(() => {});
   app.querySelectorAll('[data-play]').forEach(b => b.addEventListener('click', () => M.playChord(b.dataset.play, prefs.inst)));
@@ -565,11 +654,12 @@ function viewSong(id) {
   const re = () => { const y = scrollY; viewSong(id); scrollTo(0, y); };
   $('#tup') && $('#tup').addEventListener('click', () => { prefs.tp[id] = M.mod(tp + 1 + 6, 12) - 6; savePrefs(); re(); });
   $('#tdn') && $('#tdn').addEventListener('click', () => { prefs.tp[id] = M.mod(tp - 1 + 6, 12) - 6; savePrefs(); re(); });
-  app.querySelectorAll('[data-i]').forEach(b => b.addEventListener('click', () => { prefs.inst = b.dataset.i; savePrefs(); re(); }));
+  app.querySelectorAll('[data-i]').forEach(b => b.addEventListener('click', () => { prefs.inst = b.dataset.i; if (prefs.real) delete prefs.real[id]; savePrefs(); re(); }));
+  app.querySelectorAll('[data-cv]').forEach(b => b.addEventListener('click', () => { (prefs.real ||= {})[id] = b.dataset.cv === 'real'; savePrefs(); re(); }));
   $('#num') && $('#num').addEventListener('click', () => { prefs.numbers = !prefs.numbers; savePrefs(); re(); });
   $('#fsu') && $('#fsu').addEventListener('click', () => { prefs.fs = Math.min(2.2, +(prefs.fs + 0.1).toFixed(2)); savePrefs(); $('#sheet').style.setProperty('--fs', prefs.fs); });
   $('#fsd') && $('#fsd').addEventListener('click', () => { prefs.fs = Math.max(0.7, +(prefs.fs - 0.1).toFixed(2)); savePrefs(); $('#sheet').style.setProperty('--fs', prefs.fs); });
-  $('#prac') && $('#prac').addEventListener('click', () => { trainer.chords = songSequence(s.chordpro).map(c => M.transposeChord(c, tp, st.flats)).slice(0, 32); trainer.from = s.title; if (s.bpm) trainer.bpm = Math.min(120, s.bpm); });
+  $('#prac') && $('#prac').addEventListener('click', () => { trainer.chords = songSequence(s.chordpro).map(c => M.transposeChord(c, shift, st.flats)).slice(0, 32); trainer.from = s.title; if (s.bpm) trainer.bpm = Math.min(120, s.bpm); });
   if (!$('#go')) return;
   const rate = () => { const max = document.documentElement.scrollHeight - innerHeight; const start = $('#sheet').getBoundingClientRect().top + scrollY - 130; return Math.max(8, (max - Math.max(0, start)) / dur) * prefs.speed; };
   const step = t => {
@@ -804,7 +894,7 @@ function viewEditor(id) {
         <div class="field"><label for="f-category">Category</label><select id="f-category">${CATS.map(c => `<option value="${c.id}" ${c.id === s.category ? 'selected' : ''}>${esc(c.label)}</option>`).join('')}</select></div>
         <div class="field"><label for="f-year">Year</label><input type="number" id="f-year" inputmode="numeric" value="${esc(s.year || '')}"></div>
         <div class="field"><label for="f-key">Key</label><input type="text" id="f-key" value="${esc(s.key)}" placeholder="G or Am"></div>
-        <div class="field"><label for="f-capo">Capo</label><input type="number" id="f-capo" min="0" max="12" value="${esc(s.capo || 0)}"></div>
+        <div class="field"><label for="f-capo">Capo</label><input type="number" id="f-capo" min="0" max="12" value="${esc(s.capo || 0)}" aria-describedby="f-capo-h"><small class="mute" id="f-capo-h">With a capo, write the shapes you finger and set Key to the key it sounds in.</small></div>
         <div class="field"><label for="f-bpm">Tempo (bpm)</label><input type="number" id="f-bpm" value="${esc(s.bpm || '')}"></div>
         <div class="field"><label for="f-time">Time</label><input type="text" id="f-time" value="${esc(s.time)}"></div>
         <div class="field"><label for="f-dur">Length (m:ss)</label><input type="text" id="f-dur" value="${s.duration ? fmtTime(s.duration) : ''}" placeholder="3:30"></div>
