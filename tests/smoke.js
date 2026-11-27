@@ -35,6 +35,15 @@ const server = http.createServer((req, res) => {
   ok(await first() === 'F#m7', 'Real chords shows F#m7');
   await p.click('[data-cv="shapes"]'); await p.waitForTimeout(100);
 
+  // favourites by name
+  await p.goto(base + '#song-resham-firiri'); await p.waitForTimeout(200);
+  await p.click('#fav'); await p.fill('#fname', 'Simon'); await p.click('#fok'); await p.waitForTimeout(200);
+  ok(await p.getAttribute('#fav', 'aria-pressed') === 'true', 'favourite saved under a name');
+  ok(/Favourite of Simon/.test(await p.textContent('#favby')), 'song shows whose favourite it is');
+  await p.goto(base + '#library'); await p.waitForTimeout(300);
+  await p.click('.chips.favs button'); await p.waitForTimeout(200);
+  ok(/Simon’s favourites[\s\S]*Resham Firiri/.test(await text()), 'library filters by a person’s favourites');
+
   for (const h of ['#song-bardali', '#learn', '#add', '#song-kehi-mitho-baat-gara']) { await p.goto(base + h); await p.waitForTimeout(300); ok((await text()).length > 50, h + ' renders'); }
   ok(errs.length === 0, 'no console errors' + (errs.length ? ': ' + errs.join(' | ') : ''));
   ok(external.length === 0, 'no third-party requests' + (external.length ? ': ' + external.join(' ') : ''));

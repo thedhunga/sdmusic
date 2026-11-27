@@ -73,6 +73,8 @@ When it runs as a Claude artifact, the app uses the artifact's database:
 
 - `songs/<id>`: the **shared songbook**. Everyone the owner gives Contributor access
   can add and edit songs.
+- `favs/<key>`: **favourites by name**. Tap ☆ Favourite on a song, type your name once,
+  and everyone can pick your name in the songbook to see your favourites.
 - `data/users/<id>/profile`: each person's **private** plays, likes, lesson progress
   and practice minutes. These drive the "For you" suggestions.
 

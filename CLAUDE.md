@@ -26,5 +26,6 @@ unless there is a strong reason; it must keep working when opened straight from 
 - Everything from the shared database or other users is untrusted: escape with `esc()` or use textContent.
 - Hosted copy: published as a Claude artifact (slug `4cf263b1-601b-4974-bb73-c3ad9604e225`)
   with capabilities db, user (profile scope), downloads, desktop. Shared songs live in
-  `songs/<id>`; private per-person data in `data/users/<id>/profile`.
+  `songs/<id>`; named favourites (shared, anyone with Contributor access can write) in
+  `favs/<key>` as `{ name, songs: { songId: timestamp } }`; private per-person data in `data/users/<id>/profile`.
 - No analytics or trackers.
